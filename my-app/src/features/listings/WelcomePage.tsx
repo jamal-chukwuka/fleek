@@ -11,7 +11,7 @@ const WelcomePage: FC = () => {
 
 
 return (
-    <div className='welcome-container'>
+    <div className='container center flex-col'>
         <h1>Welcome, Seller!</h1>
         <p>{}</p>
         <button onClick={handleCreate}>

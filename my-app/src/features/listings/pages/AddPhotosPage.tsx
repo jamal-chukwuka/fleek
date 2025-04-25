@@ -57,7 +57,7 @@ const AddPhotosPage: FC = () => {
     };
 
     return (
-        <div className="add-photos-container">
+    <div className="container preview-grid thumb">
       <h2>Add up to 3 photos</h2>
 
       {/* Hidden file input */}

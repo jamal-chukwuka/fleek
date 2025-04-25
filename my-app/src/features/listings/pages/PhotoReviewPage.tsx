@@ -25,7 +25,7 @@ const PhotoReviewPage: FC = () => {
   };
 
   return (
-    <div className="review-container">
+    <div className="container center">
       <h2>Review your photos</h2>
       <ImageCarousel images={photoURLs} />
 
