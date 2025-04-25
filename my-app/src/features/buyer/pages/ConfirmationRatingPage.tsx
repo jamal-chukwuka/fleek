@@ -2,7 +2,7 @@
 import React, { FC, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
-import { ListingDetails } from '../types';
+import { ListingDetails } from '../components/Card';
 
 const ConfirmationRatingPage: FC = () => {
   const navigate = useNavigate();

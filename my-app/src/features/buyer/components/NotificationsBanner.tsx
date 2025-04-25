@@ -1,7 +1,7 @@
 // src/features/buyer/components/NotificationBanner.tsx
 import React, { FC, useState, useEffect } from 'react';
-// import PickupModal from './PickupModal';
-// import RatingModal from './RatingModal';
+import PickupModal from './PickupModal';
+import RatingModal from './RatingModal';
 
 const NotificationBanner: FC = () => {
   // these would normally come from your backend or Firestore 
@@ -44,23 +44,24 @@ const NotificationBanner: FC = () => {
         )}
       </div>
 
-      {/* {showPickupModal && (
+      {showPickupModal && (
         <PickupModal
           onClose={() => {
             setShowPickupModal(false);
             setPickupReady(false);
           }}
         />
-      )} */}
-{/* 
+      )} 
+
       {showRatingModal && (
         <RatingModal
-          onClose={() => {
-            setShowRatingModal(false);
-            setRatingPending(false);
-          }}
-        />
-      )} */}
+                  onClose={() => {
+                      setShowRatingModal(false);
+                      setRatingPending(false);
+                  } } onSubmit={function (rating: number): void {
+                      throw new Error('Function not implemented.');
+                  } }        />
+      )} 
     </>
   );
 };
