@@ -166,3 +166,52 @@ button:disabled {
   font-size: 1rem;
   width: 100%;
 }
+
+/* index.css */
+
+.scroll-row {
+  overflow-x: auto;
+}
+
+
+/* for badges on the details page */
+.badge {
+  background: var(--color-secondary);
+  color: var(--color-bg);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+}
+
+/* for the big price text */
+.card-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+}
+
+.btn-muted {
+  background: var(--color-accent);
+  color: var(--color-text);
+  border: 1px solid var(--color-muted);
+}
+
+
+.rating-stars {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.star {
+  cursor: pointer;
+  stroke: var(--color-muted);
+  fill: none;
+  width: 32px;
+  height: 32px;
+}
+
+.star.filled {
+  stroke: var(--color-primary);
+  fill: var(--color-primary);
+}
