@@ -1,6 +1,5 @@
-// EnterDetailsPage.tsx
-import React from 'react';
-import { FC, useState, FormEvent } from 'react';
+// src/features/listing/pages/EnterDetailsPage.tsx
+import React, { FC, useState, FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface LocationState {
@@ -19,14 +18,11 @@ const EnterDetailsPage: FC = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const photoURLs = (state as LocationState)?.photoURLs || [];
-
-  // Redirect back if no photos
-  if (photoURLs.length === 0) {
+  if (!photoURLs.length) {
     navigate('/listing/photos');
     return null;
   }
 
-  // Form state
   const [title, setTitle] = useState('');
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
@@ -34,54 +30,49 @@ const EnterDetailsPage: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    const details: ListingDetails = {
-      title,
-      brand,
-      category,
-      description,
-      photoURLs,
-    };
-
-    // Move to price page, carrying full listing data
-    navigate('/listing/price', { state: details });
+    navigate('/listing/price', {
+      state: { title, brand, category, description, photoURLs },
+    });
   };
 
   return (
-    <div className="details-container" style={{ padding: 16, maxWidth: 600, margin: '0 auto' }}>
+    <div className="container">
       <h2>Enter Listing Details</h2>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title
+      <form onSubmit={handleSubmit} className="flex-col">
+        {/* Title */}
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
           <input
+            id="title"
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
             required
             placeholder="e.g., Vintage leather jacket"
-            style={{ width: '100%', padding: 8, margin: '8px 0' }}
           />
-        </label>
+        </div>
 
-        <label>
-          Brand
+        {/* Brand */}
+        <div className="form-group">
+          <label htmlFor="brand">Brand</label>
           <input
+            id="brand"
             type="text"
             value={brand}
-            onChange={(e) => setBrand(e.target.value)}
+            onChange={e => setBrand(e.target.value)}
             placeholder="e.g., Levi's"
-            style={{ width: '100%', padding: 8, margin: '8px 0' }}
           />
-        </label>
+        </div>
 
-        <label>
-          Category
+        {/* Category */}
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
           <select
+            id="category"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={e => setCategory(e.target.value)}
             required
-            style={{ width: '100%', padding: 8, margin: '8px 0' }}
           >
             <option value="" disabled>Select category</option>
             <option value="Apparel">Apparel</option>
@@ -90,22 +81,22 @@ const EnterDetailsPage: FC = () => {
             <option value="Toys">Toys</option>
             <option value="Other">Other</option>
           </select>
-        </label>
+        </div>
 
-        <label>
-          Description
+        {/* Description */}
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
           <textarea
+            id="description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={e => setDescription(e.target.value)}
             rows={4}
             placeholder="Tell buyers more about your item..."
-            style={{ width: '100%', padding: 8, margin: '8px 0' }}
           />
-        </label>
+        </div>
 
-        <button type="submit" style={{ padding: '12px 24px', marginTop: 16 }}>
-          Next: Enter Price
-        </button>
+        {/* Submit */}
+        <button type="submit">Next: Enter Price</button>
       </form>
     </div>
   );
