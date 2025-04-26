@@ -236,7 +236,7 @@ const AddPhotosPage: FC = () => {
 
         {/* Submit Button */}
         <button type="submit" disabled={files.length === 0 || uploading}>
-          {uploading ? 'Uploading…' : 'Preview you photos'}
+          {uploading ? 'Uploading…' : 'Preview your photos'}
         </button> 
       </form>
     </div>
