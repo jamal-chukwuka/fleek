@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Card, { ListingSummary } from '../components/Card';
 import NotificationBanner from '../components/NotificationsBanner';
 
+
 const ForYouPage: FC = () => {
   const navigate = useNavigate();
   const [listings, setListings] = useState<ListingSummary[]>([]);
@@ -15,7 +16,7 @@ const ForYouPage: FC = () => {
         id: '1',
         title: 'Vintage NIU Hoodie',
         price: 35.0,
-        thumbnailURL: '/assets/niu-hoodie.jpg',
+        thumbnailURL: '../../../assets/niu-hoodie.jpeg' ,
         category: 'Apparel',
         brand: 'NIU',
       },
