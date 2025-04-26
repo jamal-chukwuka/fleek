@@ -1,78 +1,62 @@
-// src/features/listing/pages/ReviewListingPage.tsx
-import React, { FC } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ImageCarousel from '../../listing/components/ImageCarousel';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../../../app/firebase';
 
-interface Listing {
-  title: string;
-  brand: string;
-  category: string;
-  description: string;
-  photoURLs: string[];
-  price: number;
-}
-
-const ReviewListingPage: FC = () => {
-  const { state } = useLocation();
+const ReviewListingPage = () => {
   const navigate = useNavigate();
-  const listing = (state as Listing) || null;
-
-  if (!listing) {
-    navigate('/');
-    return null;
-  }
-
-  const { photoURLs, title, brand, category, description, price } = listing;
-
-  const handleEdit = (path: string) => {
-    navigate(path, { state: listing });
+  const { state } = useLocation() as {
+    state: {
+      photoURLs: string[];
+      title: string;
+      brand: string;
+      category: string;
+      description: string;
+      price: number;
+    };
   };
 
-  const handleSubmit = () => {
-    console.log('Submitting listing:', listing);
-    navigate('/listing/confirmation', { state: listing });
+  const handleSubmit = async () => {
+    try {
+      // ✅ Saving everything into Firestore here:
+      await addDoc(collection(db, 'listings'), {
+        title: state.title,
+        brand: state.brand,
+        category: state.category,
+        description: state.description,
+        photoURLs: state.photoURLs,               // ✅ Includes your Base64 images here
+        price: state.price,
+        createdAt: serverTimestamp(),             // ✅ Adds a timestamp
+      });
+
+      console.log('Listing saved to Firestore!');
+      navigate('/listing/confirmation', { state });  // ✅ Send user to confirmation page after saving
+    } catch (error) {
+      console.error('Error saving listing:', error);
+      alert('Failed to submit your listing. Please try again.');
+    }
   };
 
   return (
     <div className="container flex-col">
-      <h2 className="center">Review Your Listing</h2>
+      <h2>Review Your Listing ✨</h2>
 
-      {/* Photos */}
-      <div className="flex-col form-group">
-        <h3>Photos</h3>
-        <ImageCarousel images={photoURLs} />
-        <button onClick={() => handleEdit('/listing/photos')}>
-          Edit Photos
-        </button>
+      <div className="form-group">
+        <h3>{state.title}</h3>
+        <p><strong>Brand:</strong> {state.brand}</p>
+        <p><strong>Category:</strong> {state.category}</p>
+        <p><strong>Description:</strong> {state.description}</p>
+        <p><strong>Price:</strong> ${state.price}</p>
       </div>
 
-      {/* Details */}
-      <div className="flex-col form-group">
-        <h3>Details</h3>
-        <div className="flex-col">
-          <p><strong>Title:</strong> {title}</p>
-          <p><strong>Brand:</strong> {brand}</p>
-          <p><strong>Category:</strong> {category}</p>
-          <p><strong>Description:</strong> {description}</p>
-        </div>
-        <button onClick={() => handleEdit('/listing/details')}>
-          Edit Details
-        </button>
+      <h4>Photos:</h4>
+      <div className="preview-grid">
+        {state.photoURLs.map((src, idx) => (
+          <img key={idx} src={src} alt={`preview ${idx}`} className="thumb" />
+        ))}
       </div>
 
-      {/* Price */}
-      <div className="flex-col form-group">
-        <h3>Price</h3>
-        <p><strong>USD</strong> ${price.toFixed(2)}</p>
-        <button onClick={() => handleEdit('/listing/price')}>
-          Edit Price
-        </button>
-      </div>
-
-      {/* Final submit */}
-      <button onClick={handleSubmit}>
-        Submit Listing
-      </button>
+      <button onClick={handleSubmit}>Submit Listing ✅</button>
     </div>
   );
 };

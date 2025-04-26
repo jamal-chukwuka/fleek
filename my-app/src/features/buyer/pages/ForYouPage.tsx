@@ -1,35 +1,115 @@
-// src/features/buyer/pages/ForYouPage.tsx
+// import React, { FC, useEffect, useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import Card, { ListingSummary } from '../components/Card';
+// import NotificationBanner from '../components/NotificationsBanner';
+// import { collection, getDocs } from 'firebase/firestore';
+// import { db } from '../../../app/firebase';
+
+// const ForYouPage: FC = () => {
+//   const navigate = useNavigate();
+//   const [listings, setListings] = useState<ListingSummary[]>([]);
+
+//   useEffect(() => {
+//     const fetchListings = async () => {
+//       try {
+//         const querySnapshot = await getDocs(collection(db, 'listings'));
+//         const fetchedListings: ListingSummary[] = querySnapshot.docs.map(doc => ({
+//           id: doc.id,
+//           title: 'Uploaded Item',                // You can update this if you save titles later!
+//           price: 0,                              // Same here — placeholder price for now
+//           thumbnailURL: doc.data().photoURLs ? doc.data().photoURLs[0] : '',  // ✅ Use the first image from photoURLs array
+//           category: 'General',                   // Optional placeholder
+//           brand: 'No brand'                      // Optional placeholder
+//         }));
+//         setListings(fetchedListings);
+//       } catch (error) {
+//         console.error('Error fetching listings:', error);
+//       }
+//     };
+
+//     fetchListings();
+//   }, []);
+
+//   const handleCardClick = (id: string) => {
+//     const listing = listings.find(l => l.id === id)!;
+//     navigate(`/for-you/listing/${id}`, { state: listing });
+//   };
+
+//   return (
+//     <div className="container flex-col">
+//       <h2 className="center">For You ✨</h2>
+
+//       <NotificationBanner />
+
+//       <div className="form-group">
+//         <h3>Latest Listings</h3>
+//         <div className="flex-row scroll-row">
+//           {listings.map(l => (
+//             <Card
+//               key={l.id}
+//               listing={l}
+//               onClick={handleCardClick}
+//             />
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+// export default ForYouPage;
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card, { ListingSummary } from '../components/Card';
 import NotificationBanner from '../components/NotificationsBanner';
-
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../../app/firebase';
 
 const ForYouPage: FC = () => {
   const navigate = useNavigate();
   const [listings, setListings] = useState<ListingSummary[]>([]);
 
   useEffect(() => {
-    // TODO: replace with real data fetch
-    setListings([
-      {
-        id: '1',
-        title: 'Vintage NIU Hoodie',
-        price: 35.0,
-        thumbnailURL: '../../../assets/niu-hoodie.jpeg' ,
-        category: 'Apparel',
-        brand: 'NIU',
-      },
-      {
-        id: '2',
-        title: 'UIC Laptop Decal',
-        price: 5.0,
-        thumbnailURL: '/assets/uic-decal.jpg',
-        category: 'Accessories',
-      },
-      // …more
-    ]);
+    const fetchListings = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'listings'));
+        const fetchedListings: ListingSummary[] = querySnapshot.docs
+          .map(doc => {
+            const data = doc.data();
+            
+            const title = data.title?.trim();
+            const price = typeof data.price === 'number' ? data.price : null;
+            const brand = data.brand?.trim();
+            const category = data.category?.trim();
+            const thumbnailURL = data.photoURLs && data.photoURLs.length > 0 ? data.photoURLs[0] : '';
+  
+            // 🚩 Skip listing if required fields are missing
+            if (!title || price === null || !thumbnailURL) {
+              console.warn('Skipping incomplete listing:', doc.id, data);
+              return null;
+            }
+  
+            return {
+              id: doc.id,
+              title,
+              price,
+              thumbnailURL,
+              category: category || 'General',
+              brand: brand || 'No brand',
+            };
+          })
+          .filter((listing): listing is ListingSummary => listing !== null); // ✅ Remove nulls explicitly
+  
+        console.log('Fetched complete listings:', fetchedListings); // 🟢 See exactly what's being rendered
+        setListings(fetchedListings);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+      }
+    };
+  
+    fetchListings();
   }, []);
+  
+  
 
   const handleCardClick = (id: string) => {
     const listing = listings.find(l => l.id === id)!;
@@ -38,13 +118,12 @@ const ForYouPage: FC = () => {
 
   return (
     <div className="container flex-col">
-      <h2 className="center">For You</h2>
+      <h2 className="center">For You ✨</h2>
 
       <NotificationBanner />
 
-      {/* One horizontal scroll row */}
       <div className="form-group">
-        <h3>Shoes</h3>
+        <h3>Latest Listings</h3>
         <div className="flex-row scroll-row">
           {listings.map(l => (
             <Card
