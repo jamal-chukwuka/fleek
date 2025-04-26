@@ -215,3 +215,24 @@ button:disabled {
   stroke: var(--color-primary);
   fill: var(--color-primary);
 }
+.top-bar {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.hamburger span {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.new-listing-box {
+  border: 2px dashed var(--color-muted);
+  padding: 2rem;
+  text-align: center;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin: 2rem 0;
+}
