@@ -6,21 +6,21 @@ export interface ListingSummary {
   title: string;
   price: number;
   thumbnailURL: string;
-  category?: string;
-  brand?: string;
+  category: string;
+  brand:    string;
 }
 
 export interface ListingDetails {
-    id: string;
-    title: string;
-    price: number;
-    thumbnailURL: string;
-    photoURLs: string[];
-    brand: string;
-    category: string;
-    description: string;
-  }
-  
+  id: string;
+  title: string;
+  price: number;
+  thumbnailURL: string;
+  photoURLs: string[];
+  brand: string;
+  category: string;
+  description: string;
+}
+
 interface CardProps {
   listing: ListingSummary;
   onClick: (id: string) => void;
@@ -31,7 +31,7 @@ const Card: FC<CardProps> = ({ listing, onClick }) => {
 
   return (
     <div
-      className="card flex-col"
+      className="card-grid-item flex-col"
       onClick={() => onClick(id)}
       role="button"
       tabIndex={0}
