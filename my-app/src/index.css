@@ -113,6 +113,39 @@
     .scroll-row::-webkit-scrollbar {
       display: none; /* hide scrollbar on mobile */
     }
+
+  
+  /* Horizontal scroll container */
+.scroll-row {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  padding-bottom: var(--space-sm);
+  scroll-snap-type: x mandatory;
+}
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each card snaps into view */
+.card-grid-item {
+  flex: 0 0 80%;
+  max-width: 80%;
+  scroll-snap-align: start;
+  /* …other styles… */
+}
+@media (min-width: 480px) {
+  .card-grid-item {
+    flex: 0 0 calc(45% - var(--space-sm));
+    max-width: calc(45% - var(--space-sm));
+  }
+}
+@media (min-width: 768px) {
+  .card-grid-item {
+    flex: 0 0 calc(30% - var(--space-sm));
+    max-width: calc(30% - var(--space-sm));
+  }
+}
   
 /* ================================================
    Card Styles
@@ -417,3 +450,43 @@
     margin: var(--space-lg) 0;
   }
   
+  /* ================================================
+   ScrollCarousel Wrapper & Arrows
+   ================================================ */
+.carousel-wrapper {
+  position: relative;
+  margin: 0 -1rem; /* extend arrows to container edges */
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: var(--radius);
+  padding: var(--space-xs);
+  cursor: pointer;
+  z-index: 10;
+}
+.carousel-arrow.left  { left: 0.5rem;  }
+.carousel-arrow.right { right: 0.5rem; }
+
+/* Reuse your existing scroll-row (horizontal flex + snap) */
+.scroll-row {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  padding: var(--space-sm) 1rem;
+  scroll-snap-type: x mandatory;
+}
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* index.css */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;             
+  margin: 0 -1rem;         /* keeps your arrows flush with the edges */
+}
