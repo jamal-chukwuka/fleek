@@ -1,9 +1,9 @@
 /* index.css */
 :root {
-  /* UIC-inspired palette */
-  --color-primary: #0064A4;    /* UIC Blue */
-  --color-secondary: #FFCC00;  /* UIC Gold */
-  --color-accent: #F7F9FA;     /* very light grey */
+  /* Color palette from https://coolors.co/palette/cdb4db-ffc8dd-ffafcc-bde0fe-a2d2ff */
+  --color-primary: #ffafcc;    /* Light Pink */
+  --color-secondary: #BDE0FE;  /* Light Blue */
+  --color-accent: #cdb4db;     /* Pale Purple */
   --color-bg: #FFFFFF;         /* white */
   --color-text: #333333;       /* dark grey */
   --color-muted: #777777;      /* medium grey */
@@ -28,7 +28,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Sansation', sans-serif;
+  font-style: normal;
   background: var(--color-accent);
   color: var(--color-text);
   line-height: 1.5;
