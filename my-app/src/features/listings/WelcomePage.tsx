@@ -40,7 +40,7 @@ const WelcomePage: React.FC = () => {
       </header>
 
       {/* Welcome Message */}
-      <h2>Welcome, Neha!</h2>
+      <h2>Welcome, user!</h2>
 
       {/* Create New Listing Box */}
       <div 
