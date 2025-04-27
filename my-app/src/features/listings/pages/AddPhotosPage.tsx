@@ -11,6 +11,8 @@ const AddPhotosPage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
 
   const handleSelectPhotos = () => {
     fileInputRef.current?.click();
@@ -31,8 +33,19 @@ const AddPhotosPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    setSelectedImages([]);
+    setShowCancelModal(true);
   };
+
+  const confirmCancel = () => {
+    setSelectedImages([]);
+    setShowCancelModal(false);
+  };
+  
+  const closeModal = () => {
+    setShowCancelModal(false);
+  };
+  
+  
 
   return (
     <div className="container flex-col center">
@@ -75,6 +88,25 @@ const AddPhotosPage: React.FC = () => {
           </div>
         </>
       )}
+
+{showCancelModal && (
+  <div className="modal-overlay">
+    <div className="modal-container">
+      <div className="modal-header">
+        <h4>Are you sure?</h4>
+        <button onClick={closeModal} className="modal-close">&times;</button>
+      </div>
+      <div className="modal-body">
+        <p>You'll lose your selected photos if you cancel.</p>
+      </div>
+      <div className="modal-footer">
+        <button onClick={confirmCancel} className="btn-delete">Yes, Cancel</button>
+        <button onClick={closeModal} className="btn-muted">Keep Editing</button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
