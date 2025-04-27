@@ -26,6 +26,15 @@ const EnterDetailsPage: FC = () => {
   const [size, setSize] = useState('');
   const [description, setDescription] = useState('');
 
+  const [showModal, setShowModal] = useState(false);
+
+const handleCancelConfirm = () => {
+  navigate('/for-you');
+};
+
+const handleOpenModal = () => setShowModal(true);
+const handleCloseModal = () => setShowModal(false);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -39,6 +48,14 @@ const EnterDetailsPage: FC = () => {
     };
 
     navigate('/listing/price', { state: details });
+  };
+
+  const handleCancel = () => {
+    navigate('/for-you');
+  };
+
+  const handleBack = () => {
+    navigate('/listing/photos');
   };
 
   return (
@@ -63,7 +80,7 @@ const EnterDetailsPage: FC = () => {
           placeholder="Enter brand (optional)"
         />
 
-        {/* Category + Size dropdowns */}
+        {/* Category + Size */}
         <div className="flex-row">
           <select
             value={category}
@@ -112,9 +129,31 @@ const EnterDetailsPage: FC = () => {
           required
         />
 
-        {/* Next button */}
-        <button type="submit">Next</button>
+        {/* Action Buttons */}
+        <div className="flex-col center" style={{ gap: '0.5rem', marginTop: '1rem' }}>
+          <button type="submit">Next</button>
+          <button type="button" onClick={handleBack} className="btn-muted">Back</button>
+          <button type="button" onClick={handleOpenModal} className="btn-muted">Cancel</button>
+          </div>
+
       </form>
+      {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-container">
+      <div className="modal-header">
+        <h4>Cancel Listing</h4>
+      </div>
+      <div className="modal-body">
+        <p>Are you sure you want to cancel? Your progress will be lost.</p>
+      </div>
+      <div className="modal-footer flex-col">
+        <button onClick={handleCancelConfirm}>Yes, Cancel</button>
+        <button onClick={handleCloseModal} className="btn-muted">No, Stay</button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
