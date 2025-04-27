@@ -507,3 +507,27 @@
   justify-content: space-between;
   margin-top: 1rem;
 }
+
+.footer-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 0.75rem;
+  color: var(--color-text);
+}
+
+.footer-btn svg {
+  margin-bottom: 2px;
+}
+
+.footer-btn.active {
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius);
+}
+
+.footer-label {
+  font-size: 0.75rem;
+}
