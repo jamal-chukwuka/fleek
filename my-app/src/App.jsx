@@ -15,6 +15,7 @@ import PurchaseConfirmationPage from './features/buyer/pages/PurchaseConfirmatio
 import ConfirmationRatingPage from './features/buyer/pages/ConfirmationRatingPage';
 import DemoNotificationPage from './features/buyer/pages/DemoNotificationPage';
 import ManageListingsPage from './features/listings/pages/ManageListingPage';
+import UploadingPage from './features/listings/pages/UploadingPage';
 import './App.css'
 
 function App() {
@@ -38,7 +39,7 @@ function App() {
       <Route path="/for-you/rate" element={<ConfirmationRatingPage />} />
       <Route path="/demo-review" element={<DemoReviewRedirect />} />
       <Route path="/demo-notification" element={<DemoNotificationPage />} />
-
+      <Route path="/listing/uploading" element={<UploadingPage />} />
       <Route path="/listing/manage" element={<ManageListingsPage />} />
 
     </Route>

@@ -1,28 +1,4 @@
-// import React from 'react';
-// import { FC } from 'react';
-// import { useNavigate } from 'react-router-dom';
-
-// const WelcomePage: FC = () => {
-//     const navigate = useNavigate();
-
-//     const handleCreate = () => {
-//         navigate('/listing/photos');
-//     }
-
-
-// return (
-//     <div className='container center flex-col'>
-//         <h1>Welcome, Seller!</h1>
-//         <p>{}</p>
-//         <button onClick={handleCreate}>
-//             Create new listing!
-//         </button>
-//     </div>
-
-//     );
-// };
-
-// export default WelcomePage;
+// src/features/listings/WelcomePage.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,33 +7,17 @@ const WelcomePage: React.FC = () => {
 
   return (
     <div className="container flex-col center">
-      {/* Top Bar */}
-      <header className="top-bar flex-row space-between">
-        <div className="hamburger">
-          <span>☰</span>
-        </div>
-      </header>
+      <h2>Welcome, Neha!</h2>
 
-      {/* Welcome Message */}
-      <h2>Welcome, user!</h2>
-
-      {/* Create New Listing Box */}
-      
-
-      {/* Bottom Navigation */}
-      <footer className="bottom-nav flex-row center">
-        <button onClick={() => navigate('/for-you')}>✨ For You</button>
-        <div 
-        className="new-listing-box" 
+      <div
+        className="new-listing-box"
         onClick={() => navigate('/listing/photos')}
+        role="button"
+        tabIndex={0}
+        onKeyPress={(e) => e.key === 'Enter' && navigate('/listing/photos')}
       >
-                <button className="active">+ New listing
-
-                </button>
-
+        <p>+ Create New Listing</p>
       </div>
-        <button>🔍 Search</button>
-      </footer>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-// src/features/listing/pages/EnterDetailsPage.tsx
-import React, { FC, useState, FormEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+// src/features/listings/pages/EnterDetailsPage.tsx
+import React, { FC, FormEvent, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface LocationState {
   photoURLs: string[];
@@ -10,93 +10,110 @@ interface ListingDetails {
   title: string;
   brand: string;
   category: string;
+  size: string;
   description: string;
   photoURLs: string[];
 }
 
 const EnterDetailsPage: FC = () => {
-  const { state } = useLocation();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const photoURLs = (state as LocationState)?.photoURLs || [];
-  if (!photoURLs.length) {
-    navigate('/listing/photos');
-    return null;
-  }
 
   const [title, setTitle] = useState('');
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
+  const [size, setSize] = useState('');
   const [description, setDescription] = useState('');
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    navigate('/listing/price', {
-      state: { title, brand, category, description, photoURLs },
-    });
+
+    const details: ListingDetails = {
+      title,
+      brand,
+      category,
+      size,
+      description,
+      photoURLs,
+    };
+
+    navigate('/listing/price', { state: details });
   };
 
   return (
-    <div className="container">
-      <h2>Enter Listing Details</h2>
+    <div className="container flex-col">
+      <h2>New listing - Enter details</h2>
 
-      <form onSubmit={handleSubmit} className="flex-col">
-        {/* Title */}
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            required
-            placeholder="e.g., Vintage leather jacket"
-          />
-        </div>
+      <form onSubmit={handleSubmit} className="flex-col form-group">
+        {/* Item Title */}
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter item name"
+          required
+        />
 
         {/* Brand */}
-        <div className="form-group">
-          <label htmlFor="brand">Brand</label>
-          <input
-            id="brand"
-            type="text"
-            value={brand}
-            onChange={e => setBrand(e.target.value)}
-            placeholder="e.g., Levi's"
-          />
-        </div>
+        <input
+          type="text"
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+          placeholder="Enter brand (optional)"
+        />
 
-        {/* Category */}
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
+        {/* Category + Size dropdowns */}
+        <div className="flex-row">
           <select
-            id="category"
             value={category}
-            onChange={e => setCategory(e.target.value)}
+            onChange={(e) => setCategory(e.target.value)}
             required
           >
             <option value="" disabled>Select category</option>
-            <option value="Apparel">Apparel</option>
+            <option value="Women's Apparel">Women's Apparel</option>
+            <option value="Men's Apparel">Men's Apparel</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Accessories">Accessories</option>
             <option value="Electronics">Electronics</option>
-            <option value="Home">Home</option>
-            <option value="Toys">Toys</option>
+            <option value="Textbooks">Textbooks</option>
+            <option value="School Supplies">School Supplies</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Dorm Essentials">Dorm Essentials</option>
+            <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+            <option value="Sports & Outdoors">Sports & Outdoors</option>
+            <option value="Art Supplies">Art Supplies</option>
+            <option value="Musical Instruments">Musical Instruments</option>
+            <option value="Gaming">Gaming</option>
             <option value="Other">Other</option>
+          </select>
+
+          <select
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+          >
+            <option value="" disabled>Select size (optional)</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="One Size">One Size</option>
+            <option value="N/A">N/A</option>
           </select>
         </div>
 
         {/* Description */}
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-            rows={4}
-            placeholder="Tell buyers more about your item..."
-          />
-        </div>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Enter brief description"
+          rows={4}
+          required
+        />
 
-        {/* Submit */}
-        <button type="submit">Next: Enter Price</button>
+        {/* Next button */}
+        <button type="submit">Next</button>
       </form>
     </div>
   );
