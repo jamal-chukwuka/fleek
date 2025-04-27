@@ -1,30 +1,43 @@
 // src/features/buyer/pages/PurchaseConfirmationPage.tsx
-import React, { FC } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ListingDetails } from '../components/Card';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const PurchaseConfirmationPage: FC = () => {
-  const navigate = useNavigate();
+interface ListingDetails {
+  id: string;
+  title: string;
+  price: number;
+  thumbnailURL: string;
+  brand: string;
+  category: string;
+}
+
+const PurchaseConfirmationPage: React.FC = () => {
   const { state } = useLocation();
   const listing = (state as ListingDetails) || null;
+  const navigate = useNavigate();
 
-  // If navigated here without state, bounce back
+  useEffect(() => {
+    if (!listing) {
+      navigate('/for-you');
+    }
+  }, [listing, navigate]);
+
   if (!listing) {
-    navigate('/for-you');
     return null;
   }
 
   return (
     <div className="container flex-col center">
+      <div className="flex-row muted-text small-text">
+        <span>Listing &gt; Confirmation</span>
+      </div>
+
       <h2>Success!</h2>
-      <p>
-        Your deposit for <strong>{listing.title}</strong> has been confirmed.
-      </p>
-      <p className="form-group">
-        We’ll notify you when it’s ready for pickup.
-      </p>
+      <p>{listing.title} is almost yours!</p>
+      <p>We'll notify you when the item is ready for pickup.</p>
+
       <button onClick={() => navigate('/for-you')}>
-        Keep browsing
+        Keep Browsing
       </button>
     </div>
   );

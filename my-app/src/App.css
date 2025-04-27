@@ -348,3 +348,53 @@
   cursor: pointer;
   font-size: 0.9rem;
 }
+
+.muted-text {
+  color: var(--color-muted);
+}
+
+.small-text {
+  font-size: 0.875rem;
+}
+
+.seller-info {
+  background: var(--color-accent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
+  gap: var(--space-xs);
+}
+
+.carousel-dots {
+  margin-top: var(--space-sm);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: var(--color-muted);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: var(--color-primary);
+}
+
+.container.center {
+  text-align: center;
+  align-items: center;
+}
+
+.btn-muted {
+  background: var(--color-accent);
+  color: var(--color-text);
+  border: 1px solid var(--color-muted);
+  margin-top: var(--space-sm);
+}
+
+
