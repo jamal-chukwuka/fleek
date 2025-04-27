@@ -1,36 +1,43 @@
-// PhotoReviewPage.tsx
-import { FC } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import React from 'react';
+// src/features/listings/pages/PhotoReviewPage.tsx
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ImageCarousel from '../../listing/components/ImageCarousel';
 
 interface LocationState {
   photoURLs: string[];
 }
 
-const PhotoReviewPage: FC = () => {
-  const { state } = useLocation();
+const PhotoReviewPage: React.FC = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const photoURLs = (state as LocationState)?.photoURLs || [];
 
-  // If nobody uploaded photos, go back
-  if (photoURLs.length === 0) {
-    navigate('/listing/photos');
+  useEffect(() => {
+    if (!photoURLs.length) {
+      navigate('/listing/photos');
+    }
+  }, [navigate, photoURLs]);
+
+  if (!photoURLs.length) {
     return null;
   }
 
   const handleNext = () => {
-    // pass the URLs forward (or they’re already in context)
     navigate('/listing/details', { state: { photoURLs } });
   };
 
   return (
-    <div className="container center">
-      <h2>Review your photos</h2>
+    <div className="container flex-col center">
+      <div className="flex-row small-text muted-text">
+        <span>New Listing &gt; Review Photos</span>
+      </div>
+
+      {/* Carousel */}
       <ImageCarousel images={photoURLs} />
 
-      <button onClick={handleNext} style={{ marginTop: 16 }}>
-        Next: Enter details
+      {/* Next Button */}
+      <button onClick={handleNext} className="form-group">
+        Next
       </button>
     </div>
   );

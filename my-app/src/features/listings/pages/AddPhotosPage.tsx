@@ -1,123 +1,76 @@
-import { FC, useState, ChangeEvent, FormEvent } from 'react';
+// src/features/listings/pages/AddPhotosPage.tsx
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../../../app/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import React from 'react';
 
-const AddPhotosPage: FC = () => {
+const AddPhotosPage: React.FC = () => {
   const navigate = useNavigate();
-  const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
-  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // New fields:
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState<number | ''>('');
-  const [category, setCategory] = useState('');
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  // ✅ Resize image helper
-  const resizeImage = (file: File, maxWidth = 300): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        img.src = e.target?.result as string;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const scale = maxWidth / img.width;
-        canvas.width = maxWidth;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return reject('Canvas context is null');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', 0.7)); // JPEG at 70% quality
-      };
-
-      img.onerror = reject;
-    });
+  const handleSelectPhotos = () => {
+    fileInputRef.current?.click();
   };
 
-  // ✅ File selection handler
-  const onSelectFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files;
-    if (!selected) return;
+  const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
 
-    const fileArray = Array.from(selected).slice(0, 3);
-    setFiles(fileArray);
-
-    const urls = fileArray.map((file) => URL.createObjectURL(file));
-    setPreviews(urls);
+    const imagePreviews = Array.from(files).map(file => URL.createObjectURL(file));
+    setSelectedImages(imagePreviews);
   };
 
-  // ✅ Upload handler (called on form submit)
-  const uploadAll = async () => {
-    setUploading(true);
-    const photoURLs: string[] = [];  // ✅ Collect here
-  
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const base64String = await resizeImage(file);
-  
-        await addDoc(collection(db, 'listings'), {
-          photoBase64: base64String,
-          createdAt: serverTimestamp(),
-        });
-  
-        photoURLs.push(base64String);  // ✅ Collect after uploading
-      }
-  
-      // ✅ Navigate to the next step (PhotoReviewPage expects photoURLs!)
-      navigate('/listing/review-photos', { state: { photoURLs } });
-    } catch (error) {
-      console.error('Error uploading:', error);
-      alert('Upload failed: ' + (error as Error).message);
-    } finally {
-      setUploading(false);
+  const handleAddPhotos = () => {
+    if (selectedImages.length > 0) {
+      navigate('/listing/uploading', { state: { photoURLs: selectedImages } });
     }
   };
-  
-  
+
+  const handleCancel = () => {
+    setSelectedImages([]);
+  };
 
   return (
-    <div className="container flex-col">
-      <h2>Create New Listing</h2>
+    <div className="container flex-col center">
+      <div className="flex-row small-text muted-text">
+        <span>New Listing &gt; Add Photos</span>
+      </div>
 
-      <form onSubmit={(e) => { e.preventDefault(); uploadAll(); }} className="flex-col">
-       
-        
+      {/* Hidden file input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*"
+        multiple
+        onChange={handleFilesSelected}
+        style={{ display: 'none' }}
+      />
 
-
-        {/* Photo Upload */}
-        <div className="form-group">
-          <label>Upload up to 3 photos</label>
-          <input
-            id="photo-input"
-            type="file"
-            accept="image/*"
-            capture="environment"
-            multiple
-            onChange={onSelectFiles}
-          />
+      {/* Upload Box */}
+      {selectedImages.length === 0 ? (
+        <div className="new-listing-box">
+          <button onClick={handleSelectPhotos}>+ Add Photos</button>
         </div>
+      ) : (
+        <>
+          {/* Thumbnail Preview */}
+          <div className="preview-grid">
+            {selectedImages.map((src, idx) => (
+              <img key={idx} src={src} className="thumb" alt={`Selected ${idx + 1}`} />
+            ))}
+          </div>
 
-        {/* Previews */}
-        <div className="preview-grid">
-          {previews.map((src, idx) => (
-            <img key={idx} src={src} alt={`preview ${idx}`} className="thumb" />
-          ))}
-        </div>
-
-        {/* Submit Button */}
-        <button type="submit" disabled={files.length === 0 || uploading}>
-          {uploading ? 'Uploading…' : 'Preview your photos'}
-        </button> 
-      </form>
+          {/* Action Buttons */}
+          <div className="flex-col center">
+            <button onClick={handleAddPhotos}>
+              Add {selectedImages.length} Photos
+            </button>
+            <button onClick={handleCancel} className="btn-muted" style={{ marginTop: '1rem' }}>
+              Cancel
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
