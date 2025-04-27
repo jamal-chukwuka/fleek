@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
 import WelcomePage  from './features/listings/WelcomePage'
 import AddPhotosPage from './features/listings/pages/AddPhotosPage';
 import PhotoReviewPage from './features/listings/pages/PhotoReviewPage';
@@ -18,6 +19,8 @@ import './App.css'
 function App() {
   return (
     <Routes>
+    <Route path="/" element={<Layout />}>
+
       <Route path="/" element={<WelcomePage />} />
       <Route path="/listing/photos" element={<AddPhotosPage />} />
       <Route path="/listing/review-photos" element={<PhotoReviewPage />} />
@@ -34,7 +37,7 @@ function App() {
       <Route path="/for-you/rate" element={<ConfirmationRatingPage />} />
       <Route path="/demo-review" element={<DemoReviewRedirect />} />
       <Route path="/demo-notification" element={<DemoNotificationPage />} />
-
+    </Route>
 
      </Routes>
   );

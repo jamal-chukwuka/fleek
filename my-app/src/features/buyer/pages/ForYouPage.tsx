@@ -1,10 +1,12 @@
 // src/features/buyer/pages/ForYouPage.tsx
 import React, { FC, useEffect, useState, useRef } from 'react';
-import { useNavigate }       from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Card, { ListingSummary } from '../components/Card';
-import NotificationBanner    from '../components/NotificationsBanner';
+import NotificationBanner from '../components/NotificationsBanner';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 import { collection, getDocs } from 'firebase/firestore';
-import { db }                from '../../../app/firebase';
+import { db } from '../../../app/firebase';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ForYouPage: FC = () => {
@@ -12,7 +14,6 @@ const ForYouPage: FC = () => {
   const [listings, setListings] = useState<ListingSummary[]>([]);
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // load listings
   useEffect(() => {
     (async () => {
       const snap = await getDocs(collection(db, 'listings'));
@@ -51,61 +52,62 @@ const ForYouPage: FC = () => {
   };
 
   return (
-    <div className="container flex-col">
-      {/* Page header */}
-      <div className="flex-col center form-group">
-        <h2>Welcome, Sofia!</h2>
-        <p>Amazing fashion finds we think you’ll love...</p>
-      </div>
+    <div className="app-wrapper">
 
-      {/* Notification */}
-      <NotificationBanner />
-
-      {/* One container per category */}
-      {categories.map(cat => {
-        const items = listings.filter(l => l.category === cat);
-        if (!items.length) return null;
-
-        return (
-          <div key={cat} className="category-container form-group">
-            {/* Category header */}
-            <div className="category-header">
-              <h3>{cat}</h3>
-            </div>
-
-            {/* Carousel */}
-            <div className="carousel-wrapper inline-flex">
-              
-
-              <div
-                className="scroll-row inline-flex"
-                ref={el => { rowRefs.current[cat] = el; }}
-              >
-                <button
-                className="carousel-arrow left"
-                onClick={() => scrollRow(cat, -1)}
-                aria-label="Scroll left"
-              >
-                <ChevronLeft />
-              </button>
-
-                {items.map(item => (
-                  <div key={item.id} className="scroll-item">
-                    <Card listing={item} onClick={onClickCard} />
-                  </div>
-                ))}
-                <button
-                className="carousel-arrow right"
-                onClick={() => scrollRow(cat, 1)}
-                aria-label="Scroll right"
-              >
-                <ChevronRight />
-              </button>
-              </div>
-            </div>
+      <main className="main-content">
+        <div className="container flex-col">
+          {/* Welcome Header */}
+          <div className="flex-col center form-group">
+            <h2>Welcome, Sofia!</h2>
+            <p>Amazing fashion finds we think you’ll love...</p>
           </div>
-        );
-      })}
+
+          {/* Category Carousels */}
+          {categories.map(cat => {
+            const items = listings.filter(l => l.category === cat);
+            if (!items.length) return null;
+
+            return (
+              <div key={cat} className="category-container form-group">
+                <h3 className="category-header">{cat}</h3>
+
+                <div className="carousel-wrapper">
+                  {/* Left Arrow */}
+                  <button
+                    className="carousel-arrow left"
+                    onClick={() => scrollRow(cat, -1)}
+                    aria-label="Scroll left"
+                  >
+                    <ChevronLeft />
+                  </button>
+
+                  {/* Scrollable Row */}
+                  <div
+                    className="scroll-row"
+                    ref={el => { rowRefs.current[cat] = el; }}
+                  >
+                    {items.map(item => (
+                      <div key={item.id} className="scroll-item">
+                        <Card listing={item} onClick={onClickCard} />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Right Arrow */}
+                  <button
+                    className="carousel-arrow right"
+                    onClick={() => scrollRow(cat, 1)}
+                    aria-label="Scroll right"
+                  >
+                    <ChevronRight />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </main>
+
     </div>
   );
 };

@@ -5,12 +5,15 @@
    — Color palette, spacing scale, border radius
    ================================================ */
    :root {
-    --color-primary:    #0064A4;  /* UIC Blue */
-    --color-secondary:  #FFCC00;  /* UIC Gold */
-    --color-accent:     #F7F9FA;  /* Very light grey */
-    --color-bg:         #FFFFFF;  /* White */
-    --color-text:       #333333;  /* Dark grey */
-    --color-muted:      #777777;  /* Medium grey */
+    --color-primary:   #0064A4;  /* UIC Blue */
+    --color-secondary: #FFCC00;  /* UIC Gold */
+    --color-accent:    #FAFAFA;  /* Light background */
+    --color-bg:        #FFFFFF;  /* Card background */
+    --color-text:      #222222;  /* Main text */
+    --color-muted:     #777777;  /* Muted text */
+    --color-border:    #DDDDDD;  /* Divider lines */
+    --color-error:     #FF4C4C;  /* Error red */
+    --color-success:   #4CAF50;  /* Success green */
   
     --space-xs: 4px;
     --space-sm: 8px;
@@ -20,6 +23,7 @@
   
     --radius: 8px;
   }
+  
   
   /* ================================================
      Reset & Base Styles
@@ -200,3 +204,129 @@
     max-width: 200px;
   }
   
+
+  /* App Wrapper for header/footer layout */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main Content Area */
+.main-content {
+  flex-grow: 1;
+}
+
+/* Category Container */
+.category-container {
+  margin-bottom: 2rem;
+}
+
+/* Horizontal carousel wrapper: flex row */
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+/* Scrollable row of cards */
+.scroll-row {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex-grow: 1;
+  padding: 0.5rem 0;
+}
+
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each card inside */
+.scroll-item {
+  flex: 0 0 200px;
+}
+
+/* Arrows */
+.carousel-arrow {
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Category header */
+.category-header {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Top header */
+.header {
+  background: white;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.hamburger span {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Bottom nav bar */
+.footer {
+  background: white;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer button {
+  background: none;
+  border: none;
+  text-align: center;
+  font-size: 0.9rem;
+  flex-grow: 1;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.footer button.active {
+  background: black;
+  color: white;
+  border-radius: 8px;
+}
+
+/* Overall app layout */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-accent);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding-bottom: 4rem; /* Make space for bottom nav bar */
+}
