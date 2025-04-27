@@ -75,7 +75,13 @@ const ForYouPage: FC = () => {
 
             {/* Carousel */}
             <div className="carousel-wrapper inline-flex">
-              <button
+              
+
+              <div
+                className="scroll-row inline-flex"
+                ref={el => { rowRefs.current[cat] = el; }}
+              >
+                <button
                 className="carousel-arrow left"
                 onClick={() => scrollRow(cat, -1)}
                 aria-label="Scroll left"
@@ -83,24 +89,19 @@ const ForYouPage: FC = () => {
                 <ChevronLeft />
               </button>
 
-              <div
-                className="scroll-row inline-flex"
-                ref={el => { rowRefs.current[cat] = el; }}
-              >
                 {items.map(item => (
                   <div key={item.id} className="scroll-item">
                     <Card listing={item} onClick={onClickCard} />
                   </div>
                 ))}
-              </div>
-
-              <button
+                <button
                 className="carousel-arrow right"
                 onClick={() => scrollRow(cat, 1)}
                 aria-label="Scroll right"
               >
                 <ChevronRight />
               </button>
+              </div>
             </div>
           </div>
         );
