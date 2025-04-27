@@ -1,99 +1,89 @@
 // src/features/buyer/pages/ListingDetailsPage.tsx
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import ImageCarousel from '../../listing/components/ImageCarousel';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../app/firebase';
-import { ListingDetails } from '../components/Card';
+import ImageCarousel from '../../listing/components/ImageCarousel';
+
+interface FullListing {
+  id: string;
+  title: string;
+  brand: string;
+  price: number;
+  description: string;
+  photoURLs: string[];
+}
 
 const ListingDetailsPage: FC = () => {
-  const { id: listingId } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const locationState = useLocation().state as Partial<ListingDetails> | null;
-
-  const [listing, setListing] = useState<ListingDetails | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [listing, setListing] = useState<FullListing | null>(null);
 
   useEffect(() => {
-    // If we were passed full details (e.g. via state), use them
-    if (locationState?.photoURLs?.length) {
-      setListing(locationState as ListingDetails);
-      setLoading(false);
-      return;
-    }
+    const fetchListing = async () => {
+      if (!id) return;
 
-    // Otherwise, fetch the listing from Firestore by ID
-    if (!listingId) {
-      navigate('/for-you');
-      return;
-    }
+      const docRef = doc(db, 'listings', id);
+      const snap = await getDoc(docRef);
 
-    const fetch = async () => {
-      setLoading(true);
-      try {
-        const docRef = doc(db, 'listings', listingId);
-        const snap = await getDoc(docRef);
-        if (!snap.exists()) {
-          navigate('/for-you');
-          return;
-        }
+      if (snap.exists()) {
         const data = snap.data();
-        // Build a ListingDetails object from Firestore data
         setListing({
-          id:          snap.id,
-          title:       data.title,
-          price:       data.price,
-          thumbnailURL: Array.isArray(data.photoURLs) && data.photoURLs[0],
-          photoURLs:   Array.isArray(data.photoURLs) ? data.photoURLs : [],
-          category:    data.category,
-          brand:       data.brand,
-          description: data.description,
+          id: snap.id,
+          title: data.title || '',
+          brand: data.brand || '',
+          price: data.price || 0,
+          description: data.description || '',
+          photoURLs: Array.isArray(data.photoURLs) ? data.photoURLs : [],
         });
-      } catch (err) {
-        console.error('Error loading listing:', err);
+      } else {
+        console.error('No such listing!');
         navigate('/for-you');
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetch();
-  }, [listingId, locationState, navigate]);
-
-  if (loading) {
-    return <div className="container center">Loading listing…</div>;
-  }
+    fetchListing();
+  }, [id, navigate]);
 
   if (!listing) {
-    // In case fetch failed without redirect
-    navigate('/for-you');
-    return null;
+    return <div className="container center">Loading...</div>;
   }
-
-  const { id, title, brand, category, description, photoURLs, price } = listing;
 
   return (
     <div className="container flex-col">
-      <h2>{title}</h2>
-
-      <div className="flex-row center form-group">
-        <span className="badge">{category}</span>
-        {brand && <span className="badge">{brand}</span>}
+      {/* Breadcrumb */}
+      <div className="flex-row muted-text small-text">
+        <span>Listing &gt; View details</span>
       </div>
 
-      <p className="card-price large center">${price.toFixed(2)}</p>
+      {/* Title and Price */}
+      <h2>{listing.title}</h2>
+      <h3>${listing.price.toFixed(2)}</h3>
 
-      {/* Now that we fetched real photoURLs, images will render */}
-      <ImageCarousel images={photoURLs} />
+      {/* Image Carousel */}
+      <ImageCarousel images={listing.photoURLs} />
 
-      <p className="form-group">{description}</p>
+      {/* Description */}
+      <div className="form-group">
+        <p>{listing.description}</p>
+      </div>
 
-      <button
-        onClick={() =>
-          navigate(`/for-you/review/${id}`, { state: listing })
+      {/* Seller Info */}
+      <div className="seller-info flex-col">
+        <p><strong>👤 Neka_in_Fleek_22</strong></p>
+        <p>🗓️ On Fleek since 2023</p>
+        <p>⭐ Rating: 4.9/5</p>
+        <p>✔️ Verified Super Seller</p>
+      </div>
+
+      {/* Continue button */}
+      <button onClick={() => navigate(`/for-you/review/${listing.id}`, {
+        state: {
+          ...listing,
+          thumbnailURL: listing.photoURLs?.[0] || '',
         }
-      >
-        Continue to purchase
+      })}>
+          Continue to Purchase
       </button>
     </div>
   );
