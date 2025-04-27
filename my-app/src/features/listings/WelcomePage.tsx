@@ -33,7 +33,6 @@ const WelcomePage: React.FC = () => {
     <div className="container flex-col center">
       {/* Top Bar */}
       <header className="top-bar flex-row space-between">
-        <div className="logo">[Logo]</div>
         <div className="hamburger">
           <span>☰</span>
         </div>
@@ -43,18 +42,20 @@ const WelcomePage: React.FC = () => {
       <h2>Welcome, user!</h2>
 
       {/* Create New Listing Box */}
-      <div 
-        className="new-listing-box" 
-        onClick={() => navigate('/listing/photos')}
-      >
-        <p>Create new listing</p>
-        <p>+</p>
-      </div>
+      
 
       {/* Bottom Navigation */}
       <footer className="bottom-nav flex-row center">
         <button onClick={() => navigate('/for-you')}>✨ For You</button>
-        <button className="active">+ New listing</button>
+        <div 
+        className="new-listing-box" 
+        onClick={() => navigate('/listing/photos')}
+      >
+                <button className="active">+ New listing
+
+                </button>
+
+      </div>
         <button>🔍 Search</button>
       </footer>
     </div>

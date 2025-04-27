@@ -1,152 +1,350 @@
 /* index.css */
-:root {
-  /* Color palette from https://coolors.co/palette/cdb4db-ffc8dd-ffafcc-bde0fe-a2d2ff */
-  --color-primary: #ffafcc;    /* Light Pink */
-  --color-secondary: #BDE0FE;  /* Light Blue */
-  --color-accent: #cdb4db;     /* Pale Purple */
-  --color-bg: #FFFFFF;         /* white */
-  --color-text: #333333;       /* dark grey */
-  --color-muted: #777777;      /* medium grey */
 
-  /* Spacing scale */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
+/* ================================================
+   Root Variables
+   — Color palette, spacing scale, border radius
+   ================================================ */
+   :root {
+    --color-primary:   #0064A4;  /* UIC Blue */
+    --color-secondary: #FFCC00;  /* UIC Gold */
+    --color-accent:    #FAFAFA;  /* Light background */
+    --color-bg:        #FFFFFF;  /* Card background */
+    --color-text:      #222222;  /* Main text */
+    --color-muted:     #777777;  /* Muted text */
+    --color-border:    #DDDDDD;  /* Divider lines */
+    --color-error:     #FF4C4C;  /* Error red */
+    --color-success:   #4CAF50;  /* Success green */
+  
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+  
+    --radius: 8px;
+  }
+  
+  
+  /* ================================================
+     Reset & Base Styles
+     ================================================ */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--color-accent);
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* ================================================
+     Layout Utilities
+     ================================================ */
+  .container {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  @media (min-width: 600px) {
+    .container {
+      padding: var(--space-lg);
+    }
+  }
+  
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-md);
+  }
+  
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* ================================================
+     Form Elements
+     ================================================ */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--space-md);
+  }
+  
+  .form-group label {
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: var(--space-sm);
+    border: 1px solid var(--color-muted);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  /* ================================================
+     Buttons
+     ================================================ */
+  button {
+    cursor: pointer;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--radius);
+    background: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 1rem;
+  }
+  
+  button:disabled {
+    background: var(--color-muted);
+    cursor: not-allowed;
+  }
+  
+  .btn-muted {
+    background: var(--color-accent);
+    color: var(--color-text);
+    border: 1px solid var(--color-muted);
+  }
+  
+  /* ================================================
+     Card Styling
+     ================================================ */
+  .card-grid-item {
+    background: var(--color-bg);
+    border: 1px solid var(--color-muted);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .card-grid-item:active {
+    transform: scale(0.96);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+  
+  .card-info {
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    text-align: center;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .card-meta {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+  
+  .card-price {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+  
+  /* ================================================
+     Horizontal Scroll Carousel
+     ================================================ */
+  .scroll-row {
+    display: flex;               /* line cards side-by-side */
+    gap: var(--space-sm);
+    overflow-x: auto;            /* enable horizontal scroll */
+    padding: var(--space-sm) 0;
+    scroll-behavior: smooth;
+  }
+  
+  .scroll-row::-webkit-scrollbar {
+    display: none;               /* hide scrollbar */
+  }
+  
+  /* wrapper for each card to fix width */
+  .scroll-item {
+    flex: 0 0 200px;             /* fixed 200px width */
+    max-width: 200px;
+  }
+  
 
-  /* Radius */
-  --radius: 8px;
+  /* App Wrapper for header/footer layout */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* Main Content Area */
+.main-content {
+  flex-grow: 1;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Sansation', sans-serif;
-  font-style: normal;
-  background: var(--color-accent);
-  color: var(--color-text);
-  line-height: 1.5;
+/* Category Container */
+.category-container {
+  margin-bottom: 2rem;
 }
 
-/* Utility containers */
-.container {
+/* Horizontal carousel wrapper: flex row */
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
   width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  gap: 0.5rem;
 }
 
-/* Flex utilities */
-.flex-row {
+/* Scrollable row of cards */
+.scroll-row {
   display: flex;
-  flex-direction: row;
-  gap: var(--space-md);
-}
-
-.flex-col {
-  display: flex;
-  flex-direction: column;
   gap: var(--space-sm);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex-grow: 1;
+  padding: 0.5rem 0;
 }
 
-.center {
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each card inside */
+.scroll-item {
+  flex: 0 0 200px;
+}
+
+/* Arrows */
+.carousel-arrow {
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Form groups */
-.form-group {
+/* Category header */
+.category-header {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Top header */
+.header {
+  background: white;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.hamburger span {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Bottom nav bar */
+.footer {
+  background: white;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer button {
+  background: none;
+  border: none;
+  text-align: center;
+  font-size: 0.9rem;
+  flex-grow: 1;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.footer button.active {
+  background: black;
+  color: white;
+  border-radius: 8px;
+}
+
+/* Overall app layout */
+.app-wrapper {
   display: flex;
   flex-direction: column;
-  margin-bottom: var(--space-md);
+  min-height: 100vh;
+  background: var(--color-accent);
 }
 
-.form-group label {
-  margin-bottom: var(--space-xs);
-  font-weight: 600;
+.main-content {
+  flex-grow: 1;
+  padding-bottom: 4rem; /* Make space for bottom nav bar */
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: var(--space-sm);
-  border: 1px solid var(--color-muted);
+
+.manage-listing-row {
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.btn-delete {
+  background: var(--color-error);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border: none;
   border-radius: var(--radius);
-  font-size: 1rem;
-  width: 100%;
-}
-
-/* Buttons */
-button {
   cursor: pointer;
-  padding: var(--space-sm) var(--space-md);
-  border: none;
-  border-radius: var(--radius);
-  background: var(--color-primary);
-  color: var(--color-bg);
-  font-size: 1rem;
-}
-
-button:disabled {
-  background: var(--color-muted);
-  cursor: not-allowed;
-}
-
-/* Image preview grid */
-.preview-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-  justify-content: center;
-}
-
-.preview-grid .thumb {
-  flex: 1 1 calc(33% - var(--space-sm));
-  max-width: calc(33% - var(--space-sm));
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: var(--radius);
-}
-
-/* Carousel overrides */
-.carousel-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.carousel-image {
-  width: 100%;
-  object-fit: contain;
-  border-radius: var(--radius);
-}
-
-.carousel-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.8);
-  border: none;
-  font-size: 1.5rem;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius);
-}
-
-.carousel-nav.left { left: var(--space-sm); }
-.carousel-nav.right { right: var(--space-sm); }
-
-/* Responsive tweaks */
-@media (min-width: 600px) {
-  .container {
-    padding: var(--space-lg);
-  }
+  font-size: 0.9rem;
 }
