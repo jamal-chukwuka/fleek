@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[dev]
+  command = "npm run dev"
+  port = 8888
+  publish = "dist"
+
+[cache]
+  paths = [
+    "node_modules/**/*",
+    "dist/**/*"
+  ]
