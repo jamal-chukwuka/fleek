@@ -1,5 +1,5 @@
 // src/features/buyer/pages/PurchaseReviewPage.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 interface ListingDetails {
@@ -17,6 +17,23 @@ const PurchaseReviewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { state } = useLocation();
   const listing = (state as ListingDetails) || null;
+  const [showModal, setShowModal] = useState(false);
+
+// When user clicks Cancel
+const handleCancelClick = () => {
+  setShowModal(true);
+};
+
+// When user confirms in modal
+const confirmCancel = () => {
+  setShowModal(false);
+  navigate('/for-you');
+};
+
+// When user decides to stay
+const closeModal = () => {
+  setShowModal(false);
+};
 
   useEffect(() => {
     if (!listing) {
@@ -78,9 +95,26 @@ const PurchaseReviewPage: React.FC = () => {
         Confirm and Purchase
       </button>
 
-      <button className="btn-muted" onClick={handleCancel}>
+      <button type="button" className="btn-muted" onClick={handleCancelClick}>
         Cancel
       </button>
+
+      {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-container">
+      <p>Are you sure you want to cancel your purchase?</p>
+      <div className="modal-footer">
+        <button className="btn-muted" onClick={closeModal}>
+          No, stay
+        </button>
+        <button onClick={confirmCancel}>
+          Yes, cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

@@ -11,6 +11,7 @@ const PhotoReviewPage: React.FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const photoURLs = (state as LocationState)?.photoURLs || [];
+  
 
   useEffect(() => {
     if (!photoURLs.length) {
@@ -21,6 +22,8 @@ const PhotoReviewPage: React.FC = () => {
   if (!photoURLs.length) {
     return null;
   }
+
+
 
   const handleNext = () => {
     navigate('/listing/details', { state: { photoURLs } });
@@ -39,6 +42,13 @@ const PhotoReviewPage: React.FC = () => {
       <button onClick={handleNext} className="form-group">
         Next
       </button>
+<button
+  type="button"
+  className="btn-muted"
+  onClick={() => navigate('/listing/photos')}
+>
+  Back
+</button>
     </div>
   );
 };
