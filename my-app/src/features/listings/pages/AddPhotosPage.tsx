@@ -1,6 +1,10 @@
 // src/features/listings/pages/AddPhotosPage.tsx
+
+
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../../../app/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const AddPhotosPage: React.FC = () => {
   const navigate = useNavigate();
