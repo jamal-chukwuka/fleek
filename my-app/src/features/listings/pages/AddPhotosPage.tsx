@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../../app/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import ImagePreviewCarousel from '../../../components/ImagePreviewCarousel';
 
 const AddPhotosPage: React.FC = () => {
   const navigate = useNavigate();
@@ -71,11 +72,8 @@ const AddPhotosPage: React.FC = () => {
       ) : (
         <>
           {/* Thumbnail Preview */}
-          <div className="preview-grid">
-            {selectedImages.map((src, idx) => (
-              <img key={idx} src={src} className="thumb" alt={`Selected ${idx + 1}`} />
-            ))}
-          </div>
+          <ImagePreviewCarousel images={selectedImages} />
+
 
           {/* Action Buttons */}
           <div className="flex-col center">

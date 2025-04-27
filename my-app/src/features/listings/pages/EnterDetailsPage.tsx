@@ -132,8 +132,13 @@ const handleCloseModal = () => setShowModal(false);
         {/* Action Buttons */}
         <div className="flex-col center" style={{ gap: '0.5rem', marginTop: '1rem' }}>
           <button type="submit">Next</button>
-          <button type="button" onClick={handleBack} className="btn-muted">Back</button>
-          <button type="button" onClick={handleOpenModal} className="btn-muted">Cancel</button>
+          <button 
+              type="button"
+              className="btn-muted"
+              onClick={() => navigate(-1)}>
+                Back
+          </button>          
+  <button type="button" onClick={handleOpenModal} className="btn-muted">Cancel</button>
           </div>
 
       </form>
