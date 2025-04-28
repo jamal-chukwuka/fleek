@@ -3,12 +3,14 @@
 
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../../../app/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 import ImagePreviewCarousel from '../../../components/ImagePreviewCarousel';
 
 const AddPhotosPage: React.FC = () => {
   const navigate = useNavigate();
+  const storage = getStorage();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -26,6 +28,28 @@ const AddPhotosPage: React.FC = () => {
     const imagePreviews = Array.from(files).map(file => URL.createObjectURL(file));
     setSelectedImages(imagePreviews);
   };
+
+  // const handleAddPhotos = async () => {
+  //   if (selectedImages.length === 0) return;
+  
+  //   try {
+  //     const uploadPromises = selectedImages.map(async (blobUrl) => {
+  //       const response = await fetch(blobUrl);
+  //       const blob = await response.blob();
+  //       const storageRef = ref(storage, `photos/${uuidv4()}`);
+  //       await uploadBytes(storageRef, blob);
+  //       const downloadUrl = await getDownloadURL(storageRef);
+  //       return downloadUrl;
+  //     });
+  
+  //     const uploadedURLs = await Promise.all(uploadPromises);
+  //     navigate('/listing/uploading', { state: { photoURLs: uploadedURLs } });
+  
+  //   } catch (error) {
+  //     console.error('Upload failed', error);
+  //     alert('Failed to upload images.');
+  //   }
+  // };
 
   const handleAddPhotos = () => {
     if (selectedImages.length > 0) {
