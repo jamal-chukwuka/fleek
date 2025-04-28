@@ -18,7 +18,7 @@ const AddPhotosPage: React.FC = () => {
   const handleSelectPhotos = () => {
     fileInputRef.current?.click();
   };
-
+     
   const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
